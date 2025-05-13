@@ -1,70 +1,60 @@
-# DashboardApp
+# 🚀 DashboardApp
 
-Task management application with dashboard, user management and authentication, developed with Angular and Firebase.
+Modern task management application with an interactive dashboard, user management, and authentication, built with Angular and Firebase.
 
-## Table of Contents
-- Prerequisites
-- Installation
-- Firebase configuration
-- Project structure
-- Application features
-- Starting in development environment
-- Build and deployment
-- Troubleshooting
+## 📋 Table of Contents
+- ✅ Prerequisites
+- ⚙️ Installation
+- 🔥 Firebase Configuration
+- 🏗️ Project Structure
+- ✨ Application Features
+- 🖥️ Development
+- 🚢 Deployment
+- 🔧 Troubleshooting
+- 📜 License
 
-## Prerequisites
+## ✅ Prerequisites
 
 - Node.js (v18 or higher)
 - npm (v9 or higher)
 - Git (optional, but recommended)
 - Firebase account (free)
 
-## Installation in an isolated environment
+## ⚙️ Installation
 
-Follow these steps to clone and start the application:
+Quick start to clone and run the application:
 
-### 1. Clone the repository
 ```bash
+# 1. Clone the repository
 git clone https://github.com/DavideDelBimbo/DashboardApp.git
 cd DashboardApp
-```
 
-### 3. Install dependencies
-```bash
+# 2. Install dependencies
 npm install
-```
 
-### 4. Edit the environment files with Firebase credentials
-Update the `src/environments/environment.development.ts` file with your Firebase project credentials (see [Firebase Configuration](#firebase-configuration) for details).
-
-### 5. Start the application
-```bash
+# 3. Start the application
 npm start
 ```
 
-## Firebase Configuration
+> **Note:** Don't forget to configure your Firebase credentials in the environment files before starting!
 
-### 1. Create Firebase project
+## 🔥 Firebase Configuration
 
-1. Go to [Firebase Console](https://console.firebase.google.com/)
-2. Create a new project (e.g., "dashboard-application")
-3. Follow the guided procedure for basic configuration
+### 1️⃣ Create Firebase Project
+- Go to [Firebase Console](https://console.firebase.google.com/)
+- Create a new project (e.g., "dashboard-application")
 
-### 2. Authentication Configuration
+### 2️⃣ Set Up Authentication
+- Navigate to "Authentication" → "Sign-in method"
+- Enable "Email/Password" provider
 
-1. In the Firebase Console, go to "Authentication" → "Sign-in method"
-2. Enable the "Email/Password" provider
+### 3️⃣ Configure Realtime Database
+- Go to "Realtime Database" in the console
+- Create a new database (test mode for development)
 
-### 3. Realtime Database Configuration
+### 4️⃣ Update Angular Environment
 
-1. Go to "Realtime Database" in the console
-2. Create a new database
-3. Start in test mode (for development)
-4. Note the database URL
-
-### 4. Angular project configuration
-
-Edit the `environment.development.ts` file with your Firebase credentials:
+Edit environment.development.ts:
 
 ```typescript
 export const environment = {
@@ -78,109 +68,89 @@ export const environment = {
 };
 ```
 
-Replace:
-- `YOUR_API_KEY` with the Firebase Web API Key (Project settings → General → Web API Key)
-- `YOUR_DATABASE_URL` with your Realtime Database URL (ends with `/`)
+Replace the placeholders with your Firebase project credentials.
 
-## Project Structure
+## 🏗️ Project Structure
 
-The application is organized into the following main sections:
+```
+src/
+├── app/
+│   ├── auth/         # Authentication components and services
+│   ├── components/   # UI components
+│   ├── models/       # Data models
+│   ├── services/     # Data services
+│   └── ...
+├── environments/     # Environment configurations
+└── ...
+```
 
-- auth: Authentication management
-- components: Interface components
-- models: Data models
-- services: Services for data access
-- environments: Environment configurations
+## ✨ Application Features
 
-## Application Features
+### 🔐 Authentication
+- User registration and login
+- Automatic token refresh
+- Secure session management
+- Logout functionality
 
-### Authentication
-- User registration
-- User login
-- Session management with automatic token refresh
-- Logout
+### 📝 Task Management
+- Create, read, update and delete tasks
+- Assign tasks to team members
+- Task filtering and sorting
 
-### Task Management
-- Create new tasks
-- Assign tasks to users
-- Edit and update tasks
-- Delete tasks
+### 📊 Dashboard
+- Real-time KPI visualization
+- Interactive charts:
+  - Priority distribution
+  - Status breakdown
+  - User workload
+  - Progress over time
 
-### Dashboard
-- KPI visualization (total tasks, completion rate)
-- Statistical charts:
-  - Distribution by priority
-  - Distribution by status
-  - Tasks by user
-  - Task trends over time
+### 👤 Profile Settings
+- Edit personal information
+- Upload profile picture
+- Change password
 
-### Profile Settings
-- Edit user information
-- Avatar upload
-- Password change
+## 🖥️ Development
 
-## Starting in Development Environment
-
-### Using NPM script
+Start the development server:
 
 ```bash
 npm start
-```
-
-### Using local Angular CLI
-
-```bash
+# or
 npx ng serve
 ```
 
-The application will be available at `http://localhost:4200/`
+Visit `http://localhost:4200/` in your browser.
 
-## Build and Deployment
+## 🚢 Deployment
 
-### Production Build
+### Build for Production
 
 ```bash
 npm run build
-# or
-npx ng build --configuration production
 ```
 
-The compiled files will be available in the `dist/dashboard-app/` folder.
+Output is generated in `dist/dashboard-app/`.
 
-### Deployment to Firebase Hosting
+### Deploy to Firebase Hosting
 
-1. Install Firebase CLI (globally or locally)
 ```bash
+# Install Firebase tools
 npm install -g firebase-tools
-# or locally
-npm install firebase-tools --save-dev
-```
 
-2. Log in to your Firebase account
-```bash
+# Login to Firebase
 firebase login
-# or with local installation
-npx firebase login
-```
 
-3. Initialize the Firebase project
-```bash
+# Initialize Firebase (select Hosting)
 firebase init
-# or
-npx firebase init
-```
-Select Hosting, choose your project, and specify `dist/dashboard-app` as the public directory.
 
-4. Deploy
-```bash
+# Deploy your application
 firebase deploy
-# or
-npx firebase deploy
 ```
 
-### Security Rules for Realtime Database
+### Database Security Rules
 
-Configure security rules in the `database.rules.json` file:
+Example `database.rules.json`:
 
 ```json
 {
@@ -197,18 +167,16 @@ Configure security rules in the `database.rules.json` file:
 }
 ```
 
-## Troubleshooting
+## 🔧 Troubleshooting
 
-### Common issues
+### Common Issues
 
-1. **Firebase authentication error**
-   - Verify that the apiKey is correct
-   - Check that email/password authentication is enabled
+| Problem | Solution |
+|---------|----------|
+| **Firebase authentication errors** | Check API key and authentication settings |
+| **Database access issues** | Verify database URL and security rules |
+| **Compilation errors** | Run `npm install` to update dependencies |
 
-2. **Database not accessible**
-   - Verify the database URL
-   - Check the Realtime Database security rules
+## 📜 License
 
-3. **Compilation errors**
-   - Run `npm install` to update dependencies
-   - Verify that all dependencies are installed
+This project is licensed under the MIT License - see the LICENSE file for details.
