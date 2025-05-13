@@ -1,0 +1,183 @@
+.search-filter-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 16px;
+	margin-bottom: 16px;
+}
+
+.search-field {
+	flex-grow: 1;
+	min-width: 200px;
+}
+
+.search-filter-container mat-form-field {
+	min-width: 150px;
+}
+
+.search-avatar {
+	width: 24px;
+	height: 24px;
+	margin-right: 8px;
+	vertical-align: middle;
+	border-radius: 50%;
+	object-fit: cover;
+}
+
+.no-results {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	margin-top: 48px;
+}
+
+.no-results .empty-icon {
+	width: 64px;
+	height: 64px;
+	font-size: 64px;
+	color: #ccc;
+}
+
+.no-results p {
+	margin: 16px;
+	color: #666;
+	font-size: 18px;
+}
+
+.fab-container {
+	position: fixed;
+	bottom: 30px;
+	right: 30px;
+	z-index: 1000;
+}
+
+.card {
+	display: flex;
+	flex-direction: column;
+	box-sizing: border-box;
+	width: 100%;
+	height: 100%;
+	box-shadow: none;
+}
+
+.avatar {
+	margin-bottom: 0;
+}
+
+.default-avatar {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: #e0e0e0;
+	color: #757575;
+}
+
+mat-card-title {
+	font-size: 20px;
+	font-weight: 500;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+mat-card-subtitle {
+	font-size: 14px;
+	font-weight: 400;
+	color: #666;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+::ng-deep .mat-mdc-card-header-text {
+	width: 100%;
+	overflow: hidden;
+}
+
+.card-content {
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 auto;
+	justify-content: space-between;
+	padding: 16px;
+	overflow: hidden;
+}
+
+.card-description {
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	margin: 0;
+	max-height: 150px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	font-size: 14px;
+}
+
+.task-detail {
+	display: flex;
+	justify-content: start;
+	align-items: center;
+	padding: 8px 0 0 0;
+	font-size: 13px;
+}
+
+.info-icon {
+	height: 100%;
+	font-size: 16px;
+	margin-right: 8px;
+	color: #666;
+}
+
+.task-badges {
+	display: flex;
+	padding: 8px 0;
+	gap: 8px;
+}
+
+.badge {
+	padding: 4px 8px;
+	border-radius: 12px;
+	color: white;
+	font-size: 12px;
+	font-weight: 500;
+	text-transform: uppercase;
+}
+
+.card-actions {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0 16px 16px;
+}
+
+.delete-button {
+	color: #ba1a1a !important;
+}
+
+.delete-button mat-icon {
+	color: #ba1a1a;
+}
+
+.no-posts {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.empty-icon {
+	width: 64px;
+	height: 64px;
+	font-size: 64px;
+	color: #ccc;
+}
+
+.no-posts p {
+	margin: 16px;
+	color: #666;
+	font-size: 18px;
+}

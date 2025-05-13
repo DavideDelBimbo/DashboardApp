@@ -1,0 +1,146 @@
+<h1>Attività</h1>
+
+<!-- Search and filter bar -->
+<div class="search-filter-container" *ngIf="!isLoading && posts.length > 0">
+	<mat-form-field appearance="outline" class="search-field" [hideRequiredMarker]="true" [subscriptSizing]="'dynamic'">
+		<mat-label>Cerca per titolo</mat-label>
+		<input matInput [formControl]="searchControl" placeholder="Inserisci titolo..." />
+		<mat-icon matPrefix>search</mat-icon>
+		<button *ngIf="searchControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="searchControl.setValue('')">
+			<mat-icon>close</mat-icon>
+		</button>
+	</mat-form-field>
+
+	<mat-form-field appearance="outline" [hideRequiredMarker]="true" [subscriptSizing]="'dynamic'">
+		<mat-label>Priorità</mat-label>
+		<mat-select [formControl]="priorityFilter">
+			<mat-option [value]="">Tutti</mat-option>
+			<mat-option *ngFor="let priority of priorities" [value]="priority">
+				{{ priority }}
+			</mat-option>
+		</mat-select>
+	</mat-form-field>
+
+	<mat-form-field appearance="outline" [hideRequiredMarker]="true" [subscriptSizing]="'dynamic'">
+		<mat-label>Stato</mat-label>
+		<mat-select [formControl]="statusFilter">
+			<mat-option [value]="">Tutti</mat-option>
+			<mat-option *ngFor="let status of statuses" [value]="status">
+				{{ status }}
+			</mat-option>
+		</mat-select>
+	</mat-form-field>
+
+	<mat-form-field appearance="outline" *ngIf="assignees.length > 0" [hideRequiredMarker]="true" [subscriptSizing]="'dynamic'">
+		<mat-label>Assegnatario</mat-label>
+		<mat-select [formControl]="assigneeFilter">
+			<mat-option [value]="null">Tutti</mat-option>
+			<mat-option *ngFor="let assignee of assignees" [value]="assignee">
+				<mat-icon *ngIf="!assignee.avatar" class="search-avatar default-avatar">person</mat-icon>
+				<img *ngIf="assignee.avatar" [src]="assignee.avatar" alt="{{ assignee.firstName }} {{ assignee.lastName }}" class="search-avatar" />
+				{{ assignee.firstName }} {{ assignee.lastName }}
+			</mat-option>
+		</mat-select>
+	</mat-form-field>
+
+	<button
+		mat-flat-button
+		color="accent"
+		(click)="resetFilters()"
+		[disabled]="!searchControl.value && !priorityFilter.value && !statusFilter.value && !assigneeFilter.value"
+	>
+		<mat-icon>clear_all</mat-icon>
+		Reimposta filtri
+	</button>
+</div>
+
+<!-- Messaggio di nessuna attività presente -->
+<div *ngIf="!isLoading && posts.length === 0" class="no-posts">
+	<mat-icon class="empty-icon">assignment</mat-icon>
+	<p>Nessuna attività presente</p>
+	<button mat-raised-button (click)="openAddPostDialog()"><mat-icon>add</mat-icon>Aggiungi attività</button>
+</div>
+
+<!-- Messaggio di nessun risultato trovato -->
+<div *ngIf="!isLoading && posts.length > 0 && filteredPosts.length === 0" class="no-results">
+	<mat-icon class="empty-icon">search_off</mat-icon>
+	<p>Nessun risultato trovato</p>
+	<button mat-flat-button color="primary" (click)="resetFilters()">Reimposta filtri</button>
+</div>
+
+<!-- Griglia di card per visualizzare le attività -->
+<div *ngIf="!isLoading && filteredPosts.length > 0">
+	<mat-grid-list cols="3" rowHeight="280px" gutterSize="16px">
+		<mat-grid-tile *ngFor="let post of filteredPosts">
+			<mat-card class="card">
+				<!-- Header della card -->
+				<mat-card-header>
+					<mat-icon mat-card-avatar *ngIf="!post.assignee?.avatar" class="avatar default-avatar">person</mat-icon>
+					<img
+						mat-card-avatar
+						*ngIf="post.assignee?.avatar"
+						class="avatar"
+						[src]="post.assignee?.avatar"
+						alt="{{ post.assignee?.firstName }} {{ post.assignee?.lastName }}"
+					/>
+					<mat-card-title>{{ post.title }}</mat-card-title>
+					<mat-card-subtitle> Creata il: {{ post.createdAt | date : 'dd/MM/yyyy' }} </mat-card-subtitle>
+				</mat-card-header>
+
+				<!-- Contenuto della card -->
+				<mat-card-content class="card-content">
+					<p class="card-description">{{ post.description }}</p>
+
+					<!-- Dettagli dell'attività -->
+					<div class="task-info">
+						<!-- Tempo stimato -->
+						<div class="task-detail">
+							<mat-icon class="info-icon">schedule</mat-icon>
+							<span>{{ post.estimatedTime || 'N/D' }}</span>
+						</div>
+
+						<!-- Assegnatario -->
+						<div class="task-detail" *ngIf="post.assignee">
+							<mat-icon class="info-icon">person</mat-icon>
+							<span>{{ post.assignee.firstName }} {{ post.assignee.lastName }}</span>
+						</div>
+
+						<!-- Priorità -->
+						<div class="task-badges">
+							<span class="badge" [style.background-color]="getPriorityColor(post.priority)">
+								{{ post.priority || 'N/D' }}
+							</span>
+
+							<!-- Status -->
+							<span class="badge" [style.background-color]="getStatusColor(post.status)">
+								{{ post.status || 'N/D' }}
+							</span>
+						</div>
+					</div>
+				</mat-card-content>
+
+				<!-- Action buttons -->
+				<mat-card-actions class="card-actions">
+					<button mat-mini-fab class="edit-button" (click)="editPost(post)">
+						<mat-icon>edit</mat-icon>
+					</button>
+					<button mat-mini-fab class="delete-button" (click)="deletePost(post)">
+						<mat-icon>delete</mat-icon>
+					</button>
+				</mat-card-actions>
+			</mat-card>
+		</mat-grid-tile>
+	</mat-grid-list>
+</div>
+
+<!-- Action button per aggiungere una nuova attività -->
+<div class="fab-container" *ngIf="!isLoading && posts.length > 0">
+	<button mat-fab color="primary" (click)="openAddPostDialog()" matTooltip="Aggiungi attività">
+		<mat-icon>add</mat-icon>
+	</button>
+</div>
+
+<!-- Spinner di caricamento -->
+<div *ngIf="isLoading" class="spinner-container">
+	<mat-spinner diameter="50"></mat-spinner>
+</div>

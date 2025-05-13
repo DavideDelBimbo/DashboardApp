@@ -1,0 +1,69 @@
+<mat-drawer-container class="main-container">
+	<mat-drawer #drawer mode="over" closed>
+		<!-- Toolbar della sidebar -->
+		<mat-toolbar class="drawer-toolbar">
+			Menu
+			<button mat-icon-button (click)="drawer.close()" tabindex="-1">
+				<mat-icon>close</mat-icon>
+			</button>
+		</mat-toolbar>
+
+		<!-- Lista di navigazione della sidebar -->
+		<mat-nav-list>
+			<!-- Home -->
+			<a mat-list-item routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="drawer.close()" tabindex="-1">
+				<mat-icon matListItemIcon>home</mat-icon>
+				<span matListItemTitle>Home</span>
+			</a>
+
+			<!-- Dashboard -->
+			<a
+				mat-list-item
+				routerLink="/dashboard"
+				routerLinkActive="active"
+				[routerLinkActiveOptions]="{ exact: true }"
+				(click)="drawer.close()"
+				tabindex="-1"
+			>
+				<mat-icon matListItemIcon>dashboard</mat-icon>
+				<span matListItemTitle>Item 2</span>
+			</a>
+
+			<!-- Settings -->
+			<a
+				mat-list-item
+				routerLink="/settings"
+				routerLinkActive="active"
+				[routerLinkActiveOptions]="{ exact: true }"
+				(click)="drawer.close()"
+				tabindex="-1"
+			>
+				<mat-icon matListItemIcon>settings</mat-icon>
+				<span matListItemTitle>Item 3</span>
+			</a>
+		</mat-nav-list>
+	</mat-drawer>
+
+	<mat-drawer-content>
+		<!-- Toolbar principale dell'applicazione -->
+		<mat-toolbar class="main-toolbar">
+			<!-- Button per aprire la sidebar -->
+			<button mat-icon-button (click)="drawer.open()">
+				<mat-icon>menu</mat-icon>
+			</button>
+
+			<!-- Titolo dell'applicazione -->
+			<span>Dashboard App</span>
+
+			<!-- Button per effettuare il logout -->
+			<button mat-icon-button (click)="onLogout()">
+				<mat-icon>logout</mat-icon>
+			</button>
+		</mat-toolbar>
+
+		<!-- Contenuto principale dell'applicazione -->
+		<div class="main-content">
+			<router-outlet />
+		</div>
+	</mat-drawer-content>
+</mat-drawer-container>

@@ -1,0 +1,60 @@
+<div class="signup-container">
+	<h2>Registrati</h2>
+
+	<!-- Form di registrazione -->
+	<form #registerForm="ngForm" *ngIf="!isLoading" class="signup-form" (ngSubmit)="onSubmit(registerForm)">
+		<mat-card>
+			<mat-card-content>
+				<!-- Messaggio di errore -->
+				<mat-error *ngIf="errorMessage" class="error-message">
+					{{ errorMessage }}
+				</mat-error>
+
+				<!-- Campo nome -->
+				<mat-form-field appearance="fill" class="full-width">
+					<mat-label>Nome</mat-label>
+					<input matInput #firstNameInput="ngModel" type="text" name="firstName" ngModel="" required />
+					<mat-error *ngIf="firstNameInput.invalid && firstNameInput.touched">Campo obbligatorio</mat-error>
+				</mat-form-field>
+
+				<!-- Campo cognome -->
+				<mat-form-field appearance="fill" class="full-width">
+					<mat-label>Cognome</mat-label>
+					<input matInput #lastNameInput="ngModel" type="text" name="lastName" ngModel="" required />
+					<mat-error *ngIf="lastNameInput.invalid && lastNameInput.touched">Campo obbligatorio</mat-error>
+				</mat-form-field>
+
+				<!-- Campo email -->
+				<mat-form-field appearance="fill" class="full-width">
+					<mat-label>Email</mat-label>
+					<input matInput #emailInput="ngModel" type="email" name="email" ngModel="" required email />
+					<mat-error *ngIf="emailInput.invalid && emailInput.touched">Inserisci un indirizzo email valido</mat-error>
+				</mat-form-field>
+
+				<!-- Campo password -->
+				<mat-form-field appearance="fill" class="full-width">
+					<mat-label>Password</mat-label>
+					<input matInput #passwordInput="ngModel" type="password" name="password" ngModel="" required minlength="6" />
+					<mat-error *ngIf="passwordInput.invalid && passwordInput.touched">La password deve contenere almeno 6 caratteri</mat-error>
+				</mat-form-field>
+
+				<!-- Opzione "Ricordami" -->
+				<div class="remember-me">
+					<mat-label>Ricordami</mat-label>
+					<mat-checkbox #rememberMeInput="ngModel" name="rememberMe" [ngModel]="false"></mat-checkbox>
+				</div>
+
+				<!-- Buttons -->
+				<div class="form-actions">
+					<button mat-raised-button type="submit" [disabled]="registerForm.invalid">Registrati</button>
+					<a mat-button routerLink="/auth/signin">Hai già un account? Accedi</a>
+				</div>
+			</mat-card-content>
+		</mat-card>
+	</form>
+
+	<!-- Spinner di caricamento -->
+	<div *ngIf="isLoading" class="spinner-container">
+		<mat-spinner diameter="50"></mat-spinner>
+	</div>
+</div>

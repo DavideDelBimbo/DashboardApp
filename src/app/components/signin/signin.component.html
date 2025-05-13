@@ -1,0 +1,46 @@
+<div class="signin-container">
+	<h2>Accedi</h2>
+
+	<!-- Form di login -->
+	<form #loginForm="ngForm" *ngIf="!isLoading" class="signin-form" (ngSubmit)="onSubmit(loginForm)">
+		<mat-card>
+			<mat-card-content>
+				<!-- Messaggio di errore -->
+				<mat-error *ngIf="errorMessage" class="error-message">
+					{{ errorMessage }}
+				</mat-error>
+
+				<!-- Campo email -->
+				<mat-form-field appearance="fill" class="full-width">
+					<mat-label>Email</mat-label>
+					<input matInput #emailInput="ngModel" type="email" name="email" ngModel="" required email />
+					<mat-error *ngIf="emailInput.invalid && emailInput.touched">Inserisci un indirizzo email valido</mat-error>
+				</mat-form-field>
+
+				<!-- Campo password -->
+				<mat-form-field appearance="fill" class="full-width">
+					<mat-label>Password</mat-label>
+					<input matInput #passwordInput="ngModel" type="password" name="password" ngModel="" required minlength="6" />
+					<mat-error *ngIf="passwordInput.invalid && passwordInput.touched">La password deve contenere almeno 6 caratteri</mat-error>
+				</mat-form-field>
+
+				<!-- Opzione "Ricordami" -->
+				<div class="remember-me">
+					<mat-label>Ricordami</mat-label>
+					<mat-checkbox #rememberMeInput="ngModel" name="rememberMe" [ngModel]="false"></mat-checkbox>
+				</div>
+
+				<!-- Buttons -->
+				<div class="form-actions">
+					<button mat-raised-button type="submit" [disabled]="loginForm.invalid">Accedi</button>
+					<a mat-button routerLink="/auth/signup">Non hai un account? Registrati</a>
+				</div>
+			</mat-card-content>
+		</mat-card>
+	</form>
+
+	<!-- Spinner di caricamento -->
+	<div *ngIf="isLoading" class="spinner-container">
+		<mat-spinner diameter="50"></mat-spinner>
+	</div>
+</div>

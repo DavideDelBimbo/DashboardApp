@@ -1,0 +1,98 @@
+<h1>Impostazioni Profilo</h1>
+
+<div class="settings-container">
+	<!-- Form di modifica profilo -->
+	<form [formGroup]="profileForm" *ngIf="!isLoading && !isSaving" class="settings-form" (ngSubmit)="onSubmit()">
+		<mat-card>
+			<mat-card-content>
+				<!-- Messaggio di successo -->
+				<div *ngIf="successMessage" class="success-message">
+					{{ successMessage }}
+				</div>
+
+				<!-- Messaggio di errore -->
+				<mat-error *ngIf="errorMessage" class="error-message">
+					{{ errorMessage }}
+				</mat-error>
+
+				<!-- Avatar -->
+				<div class="avatar-container">
+					<div class="avatar-preview">
+						<mat-icon *ngIf="!profileForm.get('avatar')?.value" class="default-avatar">person</mat-icon>
+						<img *ngIf="profileForm.get('avatar')?.value" [src]="profileForm.get('avatar')?.value" alt="Avatar utente" />
+					</div>
+
+					<div class="avatar-buttons">
+						<button type="button" mat-raised-button (click)="fileInput.click()"><mat-icon>photo_camera</mat-icon> Cambia avatar</button>
+						<button type="button" mat-raised-button class="delete" *ngIf="profileForm.get('avatar')?.value" (click)="removeAvatar(fileInput)">
+							<mat-icon>delete</mat-icon> Rimuovi
+						</button>
+					</div>
+					<input hidden type="file" #fileInput accept="image/*" (change)="onFileSelected($event)" />
+				</div>
+
+				<!-- Campo nome -->
+				<mat-form-field appearance="fill" class="full-width">
+					<mat-label>Nome</mat-label>
+					<input matInput type="text" formControlName="firstName" />
+					<mat-error *ngIf="profileForm.get('firstName')?.hasError('required')"> Campo obbligatorio </mat-error>
+				</mat-form-field>
+
+				<!-- Campo cognome -->
+				<mat-form-field appearance="fill" class="full-width">
+					<mat-label>Cognome</mat-label>
+					<input matInput type="text" formControlName="lastName" />
+					<mat-error *ngIf="profileForm.get('lastName')?.hasError('required')"> Campo obbligatorio </mat-error>
+				</mat-form-field>
+
+				<!-- Campo email -->
+				<mat-form-field appearance="fill" class="full-width">
+					<mat-label>Email</mat-label>
+					<input matInput type="email" formControlName="email" />
+				</mat-form-field>
+
+				<!-- Sezione cambio password -->
+				<mat-expansion-panel class="password-panel">
+					<mat-expansion-panel-header>
+						<mat-panel-title>Cambia password</mat-panel-title>
+					</mat-expansion-panel-header>
+
+					<div formGroupName="passwordGroup">
+						<!-- Nuova password -->
+						<mat-form-field appearance="fill" class="full-width">
+							<mat-label>Nuova password</mat-label>
+							<input matInput type="password" formControlName="newPassword" />
+							<mat-error *ngIf="passwordGroup.hasError('newPasswordRequired')"> Campo obbligatorio</mat-error>
+							<mat-error *ngIf="passwordGroup.get('newPassword')?.hasError('minlength')"> La password deve contenere almeno 6 caratteri </mat-error>
+						</mat-form-field>
+
+						<!-- Conferma password -->
+						<mat-form-field appearance="fill" class="full-width">
+							<mat-label>Conferma password</mat-label>
+							<input matInput type="password" formControlName="confirmPassword" />
+							<mat-error *ngIf="passwordGroup.hasError('confirmPasswordRequired')"> Campo obbligatorio </mat-error>
+							<mat-error *ngIf="passwordGroup.hasError('passwordMismatch')"> Le password non coincidono </mat-error>
+						</mat-form-field>
+
+						<!-- Messaggio di aiuto -->
+						<div class="password-help-text" *ngIf="hasPasswordChanges() && !passwordGroup.valid">
+							<mat-icon>info</mat-icon>
+							<span>Compila tutti i campi correttamente</span>
+						</div>
+					</div>
+				</mat-expansion-panel>
+
+				<!-- Buttons -->
+				<div class="form-actions">
+					<button mat-button type="button" routerLink="/">Annulla</button>
+					<button mat-raised-button type="submit" [disabled]="!canSubmit() || isSaving">Salva modifiche</button>
+				</div>
+			</mat-card-content>
+		</mat-card>
+	</form>
+
+	<!-- Spinner di caricamento -->
+	<div *ngIf="isLoading || isSaving" class="spinner-container">
+		<mat-spinner diameter="50"></mat-spinner>
+	</div>
+</div>

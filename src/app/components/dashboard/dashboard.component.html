@@ -1,0 +1,99 @@
+<h1>Dashboard delle Attività</h1>
+
+<!-- KPI Cards -->
+<div class="kpi-container">
+	<mat-card class="kpi-card">
+		<mat-card-content>
+			<div class="kpi-value">{{ totalTasks }}</div>
+			<div class="kpi-label">Totale attività</div>
+		</mat-card-content>
+	</mat-card>
+
+	<mat-card class="kpi-card">
+		<mat-card-content>
+			<div class="kpi-value">{{ completionRate }}%</div>
+			<div class="kpi-label">Tasso di completamento</div>
+			<mat-progress-bar mode="determinate" [value]="completionRate" />
+		</mat-card-content>
+	</mat-card>
+
+	<mat-card class="kpi-card">
+		<mat-card-content>
+			<div class="kpi-grid">
+				<div>
+					<span class="status-dot completed"></span>
+					<span class="kpi-value">{{ completedTasks }}</span>
+					<div class="kpi-label">Completate</div>
+				</div>
+				<div>
+					<span class="status-dot in-progress"></span>
+					<span class="kpi-value">{{ inProgressTasks }}</span>
+					<div class="kpi-label">In Corso</div>
+				</div>
+				<div>
+					<span class="status-dot to-do"></span>
+					<span class="kpi-value">{{ pendingTasks }}</span>
+					<div class="kpi-label">Da Fare</div>
+				</div>
+			</div>
+		</mat-card-content>
+	</mat-card>
+</div>
+
+<!-- Charts Grid -->
+<div class="charts-grid">
+	<!-- Grafico distribuzione per priorità -->
+	<mat-card class="chart-card">
+		<mat-card-header>
+			<mat-card-title>Distribuzione per priorità</mat-card-title>
+		</mat-card-header>
+		<mat-card-content>
+			<ngx-charts-pie-chart [results]="priorityChartData" [scheme]="priorityColorScheme" [legend]="true" [labels]="true" />
+		</mat-card-content>
+	</mat-card>
+
+	<!-- Grafico distribuzione per stato -->
+	<mat-card class="chart-card">
+		<mat-card-header>
+			<mat-card-title>Distribuzione per stato</mat-card-title>
+		</mat-card-header>
+		<mat-card-content>
+			<ngx-charts-advanced-pie-chart [results]="statusChartData" [scheme]="statusColorScheme" />
+		</mat-card-content>
+	</mat-card>
+
+	<!-- Grafico attività per utente -->
+	<mat-card class="chart-card">
+		<mat-card-header>
+			<mat-card-title>Attività per utente</mat-card-title>
+		</mat-card-header>
+		<mat-card-content>
+			<ngx-charts-bar-horizontal
+				[results]="assigneeChartData"
+				[xAxis]="true"
+				[yAxis]="true"
+				[legend]="true"
+				xAxisLabel="Numero attività"
+				yAxisLabel="Utente"
+			/>
+		</mat-card-content>
+	</mat-card>
+
+	<!-- Grafico timeline attività -->
+	<mat-card class="chart-card">
+		<mat-card-header>
+			<mat-card-title>Andamento attività nel tempo</mat-card-title>
+		</mat-card-header>
+		<mat-card-content>
+			<ngx-charts-line-chart
+				[results]="timelineData"
+				[xAxis]="true"
+				[yAxis]="true"
+				[legend]="true"
+				[showGridLines]="true"
+				xAxisLabel="Periodo"
+				yAxisLabel="Numero attività"
+			/>
+		</mat-card-content>
+	</mat-card>
+</div>

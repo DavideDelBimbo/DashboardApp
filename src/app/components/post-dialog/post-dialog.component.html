@@ -1,0 +1,78 @@
+<!-- Titolo del dialog -->
+<h2 mat-dialog-title>{{ !data.isEdit ? 'Aggiungi attività' : 'Modifica attività' }}</h2>
+
+<!-- Contenuto del dialog -->
+<mat-dialog-content>
+	<form [formGroup]="postForm">
+		<!-- Campo per il titolo -->
+		<mat-form-field appearance="fill" class="full-width">
+			<mat-label>Titolo</mat-label>
+			<input matInput type="text" formControlName="title" required />
+			<mat-error *ngIf="postForm.get('title')?.hasError('required')"> Campo obbligatorio </mat-error>
+		</mat-form-field>
+
+		<!-- Campo per la descrizione -->
+		<mat-form-field appearance="fill" class="full-width">
+			<mat-label>Descrizione</mat-label>
+			<textarea matInput type="text" formControlName="description" rows="3" required></textarea>
+			<mat-error *ngIf="postForm.get('description')?.hasError('required')"> Campo obbligatorio </mat-error>
+		</mat-form-field>
+
+		<!-- Campo per il tempo stimato -->
+		<mat-form-field appearance="fill" class="full-width">
+			<mat-label>Tempo stimato</mat-label>
+			<input matInput type="text" formControlName="estimatedTime" placeholder="Es. 2h 30m" />
+			<mat-error *ngIf="postForm.get('estimatedTime')?.hasError('required')"> Campo obbligatorio </mat-error>
+			<mat-error *ngIf="postForm.get('estimatedTime')?.hasError('pattern')"> Formato non valido </mat-error>
+		</mat-form-field>
+
+		<div class="form-row">
+			<!-- Campo per la priorità -->
+			<mat-form-field appearance="fill" class="half-width">
+				<mat-label>Priorità</mat-label>
+				<mat-select formControlName="priority">
+					<mat-option *ngFor="let priority of priorities | keyvalue" [value]="priority.value">
+						{{ priority.value }}
+					</mat-option>
+				</mat-select>
+				<mat-error *ngIf="postForm.get('priority')?.hasError('required')"> Campo obbligatorio </mat-error>
+			</mat-form-field>
+
+			<!-- Campo per lo stato -->
+			<mat-form-field appearance="fill" class="half-width">
+				<mat-label>Stato</mat-label>
+				<mat-select formControlName="status">
+					<mat-option *ngFor="let status of statuses | keyvalue" [value]="status.value">
+						{{ status.value }}
+					</mat-option>
+				</mat-select>
+				<mat-error *ngIf="postForm.get('status')?.hasError('required')"> Campo obbligatorio </mat-error>
+			</mat-form-field>
+		</div>
+
+		<!-- Campo per l'assegnazione -->
+		<mat-form-field appearance="fill" class="full-width">
+			<mat-label>Assegnato a</mat-label>
+			<input matInput type="text" formControlName="assignee" [matAutocomplete]="auto" placeholder="Inizia a digitare un nome o un cognome" />
+			<mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
+				<mat-option *ngFor="let user of filteredUsers | async" [value]="user" (onSelectionChange)="selectUser(user)">
+					<div class="assignee-option">
+						<mat-icon *ngIf="!user.avatar" class="avatar default-avatar">person</mat-icon>
+						<img *ngIf="user.avatar" class="avatar" [src]="user.avatar" alt="{{ user.firstName }} {{ user.lastName }}" />
+						<span>{{ user.firstName }} {{ user.lastName }}</span>
+					</div>
+				</mat-option>
+			</mat-autocomplete>
+			<mat-error *ngIf="postForm.get('assignee')?.hasError('required')">Campo obbligatorio</mat-error>
+			<mat-error *ngIf="postForm.get('assignee')?.hasError('invalidUser')">{{ postForm.get('assignee')?.getError('invalidUser') }}</mat-error>
+		</mat-form-field>
+	</form>
+</mat-dialog-content>
+
+<!-- Buttons del dialog -->
+<mat-dialog-actions>
+	<button mat-button mat-dialog-close>Annulla</button>
+	<button mat-button color="primary" [disabled]="postForm.invalid" (click)="onSubmit()">
+		{{ !data.isEdit ? 'Salva' : 'Aggiorna' }}
+	</button>
+</mat-dialog-actions>
